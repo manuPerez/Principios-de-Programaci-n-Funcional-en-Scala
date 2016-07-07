@@ -35,7 +35,7 @@ object ImplementationList extends App{
 
   def removeAt[T](x: Int, list: List[T]): List[T] = list.take(x) ::: list.drop(x + 1)
 
-  def msort[T](xs: List[T])(ord: Ordering[T]): List[T] = {
+  def msort[T](xs: List[T])(implicit ord: Ordering[T]): List[T] = {
     val n = xs.length / 2
     if (n == 0) xs
     else {
@@ -50,15 +50,15 @@ object ImplementationList extends App{
             else y2 :: merge(xs, ys2)
         }
       val (fst, snd) = xs splitAt n
-      merge(msort(fst)(ord), msort(snd)(ord))
+      merge(msort(fst), msort(snd))
     }
   }
 
   val nums = List(2, -4, 5, 7, 1)
-  val numsOrdered = msort(nums)(Ordering.Int)
+  val numsOrdered = msort(nums)
 
   val fruits = List("apple", "pineapple", "orange", "banana")
-  val fruitsOrdered = msort(fruits)(Ordering.String)
+  val fruitsOrdered = msort(fruits)
 
   println(numsOrdered)
   println(fruitsOrdered)
