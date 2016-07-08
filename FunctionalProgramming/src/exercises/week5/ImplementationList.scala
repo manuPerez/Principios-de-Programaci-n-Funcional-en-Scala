@@ -1,14 +1,12 @@
 package week5
 
-import scala.collection.mutable.ListBuffer
+object ImplementationList extends App {
 
-object ImplementationList extends App{
-
-  def Last[T](list: List[T]): T = {
+  def last[T](list: List[T]): T = {
     list match {
       case List() => throw new Exception("Empty list")
       case List(x) => x
-      case x :: xs => Last(xs)
+      case x :: xs => last(xs)
     }
   }
 
@@ -19,6 +17,7 @@ object ImplementationList extends App{
       case x :: xs => x :: init(xs)
     }
   }
+
   def concat[T](listA: List[T], listB: List[T]): List[T] = {
     listA match {
       case List() => listB
@@ -54,6 +53,49 @@ object ImplementationList extends App{
     }
   }
 
+  /* squareList with pattern matching */
+  def squareList(xs: List[Int]): List[Int] =
+    xs match {
+      case Nil => Nil
+      case y :: ys => (y * y) :: squareList(ys)
+    }
+
+  /* squareList with map */
+//  abstract class List[T] {
+//    def map[U](f: T => U): List[U] = this match {
+//      case Nil => this
+//      case x :: xs => f(x) :: xs.map(f)
+//    }
+//  }
+
+  def squareListMap(xs: List[Int]): List[Int] = xs map (x => x * x)
+
+  def posElems(xs: List[Int]): List[Int] = xs match {
+    case Nil => Nil
+    case y :: ys => if(y > 0) y :: posElems(ys) else posElems(ys)
+  }
+
+//  abstract class List[T] {
+//    ...
+//    def filter(p: T => Boolean): List[T] = this match {
+//      case Nil
+//      => this
+//      case x :: xs => if (p(x)) x :: xs.filter(p) else xs.filter(p)
+//    }
+//  }
+
+  def posElemsWithFilter(xs: List[Int]): List[Int] = xs filter (x => x > 0)
+
+  def pack[T](xs: List[T]): List[List[T]] = xs match {
+    case Nil => Nil
+    case y :: ys => List(xs.takeWhile(a => a == y)) ::: pack(xs.dropWhile(b => b == y))
+  }
+
+  def encode[T](xs: List[T]): List[(String, Int)] = xs match {
+    case Nil => Nil
+    case y :: ys => pack(xs).flatMap(a => List((a.head.toString, a.size)))
+  }
+
   val nums = List(2, -4, 5, 7, 1)
   val numsOrdered = msort(nums)
 
@@ -63,4 +105,13 @@ object ImplementationList extends App{
   println(numsOrdered)
   println(fruitsOrdered)
 
+  val pr = squareList(nums)
+  val pr2 = squareListMap(nums)
+
+  println(pr + " " + pr2)
+
+  println(pack(List("a", "a", "a", "b", "c", "c", "a")))
+
+  println(encode(List("a", "a", "a", "b", "c", "c", "a")))
 }
+
