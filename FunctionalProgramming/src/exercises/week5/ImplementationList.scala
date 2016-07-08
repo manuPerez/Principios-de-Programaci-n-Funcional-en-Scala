@@ -88,13 +88,18 @@ object ImplementationList extends App {
 
   def pack[T](xs: List[T]): List[List[T]] = xs match {
     case Nil => Nil
-    case y :: ys => List(xs.takeWhile(a => a == y)) ::: pack(xs.dropWhile(b => b == y))
+    case y :: ys => val (first, rest) = xs.span(a => a == y)
+                    first :: pack(rest)
   }
 
-  def encode[T](xs: List[T]): List[(String, Int)] = xs match {
+  def encode[T](xs: List[T]): List[(T, Int)] = xs match {
     case Nil => Nil
-    case y :: ys => pack(xs).flatMap(a => List((a.head.toString, a.size)))
+    case y :: ys => pack(xs).flatMap(a => List((a.head, a.size)))
   }
+
+  /* another way */
+//  def encode[T](xs: List[T]): List[(T, Int)] =
+//    pack(xs) map (ys => (ys.head, ys.length))
 
   val nums = List(2, -4, 5, 7, 1)
   val numsOrdered = msort(nums)
