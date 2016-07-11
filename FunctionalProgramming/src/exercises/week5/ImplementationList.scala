@@ -18,12 +18,12 @@ object ImplementationList extends App {
     }
   }
 
-  def concat[T](listA: List[T], listB: List[T]): List[T] = {
-    listA match {
-      case List() => listB
-      case x :: xs => x :: concat(xs, listB)
-    }
-  }
+//  def concat[T](listA: List[T], listB: List[T]): List[T] = {
+//    listA match {
+//      case List() => listB
+//      case x :: xs => x :: concat(xs, listB)
+//    }
+//  }
 
   def reverse[T](list: List[T]): List[T] = {
     list match {
@@ -97,9 +97,25 @@ object ImplementationList extends App {
     case y :: ys => pack(xs).flatMap(a => List((a.head, a.size)))
   }
 
-  /* another way */
+  //another way
 //  def encode[T](xs: List[T]): List[(T, Int)] =
 //    pack(xs) map (ys => (ys.head, ys.length))
+
+//  def sum(xs: List[Int]) = (0 :: xs) reduceLeft ((x, y) => x + y)
+//
+//  def product(xs: List[Int]) = (1 :: xs) reduceLeft ((x, y) => x * y)
+
+  //shorter
+//  def sum(xs: List[Int]) = (0 :: xs) reduceLeft (_ + _)
+
+  def product(xs: List[Int]) = (1 :: xs) reduceLeft (_ * _)
+
+  //another way
+  def sum(xs: List[Int]) = (xs foldLeft 0) (_ + _)
+
+  def concat[T](xs: List[T], ys: List[T]): List[T] =
+    (xs foldRight ys) (_ :: _)
+//  (xs foldLeft ys) (_ :: _) it isn't possible replace foldRight by foldLeft because the types would not work out
 
   val nums = List(2, -4, 5, 7, 1)
   val numsOrdered = msort(nums)
@@ -118,5 +134,7 @@ object ImplementationList extends App {
   println(pack(List("a", "a", "a", "b", "c", "c", "a")))
 
   println(encode(List("a", "a", "a", "b", "c", "c", "a")))
+
+  println(concat(List(1,2,3,4), List(2,3,4,5,6,7)))
 }
 
