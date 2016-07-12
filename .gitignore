@@ -8,5 +8,5 @@ videos
 slides
 .classpath
 *.log
-.gitignore
+*.odt
 
